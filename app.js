@@ -118,14 +118,17 @@ const sessionConfig = {
     secret: process.env.SESSION_SECRET || 'your-secret-key',
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         httpOnly: true,
+        sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     },
     store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/shan_dashboard',
-        collectionName: 'sessions'
+        mongoUrl: process.env.MONGO_URI || 'mongodb://localhost:27017/shan_dashboard',
+        collectionName: 'sessions',
+        ttl: 24 * 60 * 60
     })
 };
 
