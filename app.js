@@ -94,7 +94,11 @@ app.use(helmet({
 
 // CORS middleware
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://cdn.datatables.net'],
+    origin: [
+        'http://localhost:3000', 
+        'https://cdn.datatables.net',
+        'https://burmeseshan-production.up.railway.app'
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true
 }));
