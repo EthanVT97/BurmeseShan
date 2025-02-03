@@ -1,0 +1,140 @@
+<%- include('../partials/header', { title: 'Games', subtitle: 'Game Management', breadcrumb: 'Games' }) %>
+
+<!-- Main Content -->
+<div class="container-fluid py-3 py-lg-4">
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">Game Management</h1>
+            <p class="mb-0 text-muted">Create and manage games</p>
+        </div>
+        <div class="d-flex flex-column flex-sm-row gap-2">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addGameModal">
+                <i class="bi bi-plus-circle me-1"></i> New Game
+            </button>
+        </div>
+    </div>
+
+    <!-- Games Table Card -->
+    <div class="table-card">
+        <div class="card-header d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
+            <h5 class="card-title mb-0">All Games</h5>
+            <div class="d-flex gap-2 w-100 w-sm-auto">
+                <select id="gameStatusFilter" name="gameStatusFilter" class="form-select form-select-sm">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                <button type="button" class="btn btn-sm btn-outline-primary refresh-games">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                </button>
+            </div>
+        </div>
+        <div class="card-body px-0 px-sm-3">
+            <div class="table-responsive">
+                <table id="gamesTable" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Image</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Players</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be loaded via AJAX -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Game Modal -->
+<div class="modal fade" id="addGameModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Game</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addGameForm" name="addGameForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="gameTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="gameTitle" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gameDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="gameDescription" name="description" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gameImage" class="form-label">Game Image</label>
+                        <input type="file" class="form-control" id="gameImage" name="image" accept="image/*">
+                        <small class="text-muted">Recommended size: 800x600 pixels</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle me-1"></i> Create Game
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Game Modal -->
+<div class="modal fade" id="editGameModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Game</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editGameForm" name="editGameForm">
+                <input type="hidden" id="editGameId" name="id">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editGameTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="editGameTitle" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editGameDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="editGameDescription" name="description" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editGameImage" class="form-label">Game Image</label>
+                        <input type="file" class="form-control" id="editGameImage" name="image" accept="image/*">
+                        <small class="text-muted">Leave empty to keep current image</small>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="editGameActive" name="active">
+                            <label class="form-check-label" for="editGameActive">Active</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-1"></i> Update Game
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container for Notifications -->
+<div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050"></div>
+
+<%- include('../partials/footer') %>
+
+<!-- Page specific script -->
+<script src="/js/games.js"></script>

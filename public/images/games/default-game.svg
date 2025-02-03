@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="512" height="512" rx="64" fill="#f0f2f5"/>
+    
+    <!-- Game Controller -->
+    <g transform="translate(96, 156)">
+        <!-- Controller Body -->
+        <path d="M320 100C320 44.7715 275.228 0 220 0H100C44.7715 0 0 44.7715 0 100V120C0 175.228 44.7715 220 100 220H220C275.228 220 320 175.228 320 120V100Z" 
+              fill="#2563eb"/>
+        
+        <!-- D-Pad -->
+        <rect x="40" y="90" width="50" height="15" rx="5" fill="white"/>
+        <rect x="57.5" y="72.5" width="15" height="50" rx="5" fill="white"/>
+        
+        <!-- Action Buttons -->
+        <circle cx="250" cy="110" r="15" fill="#ffffff"/>
+        <circle cx="220" cy="90" r="15" fill="#ffffff"/>
+        <circle cx="280" cy="90" r="15" fill="#ffffff"/>
+        <circle cx="250" cy="70" r="15" fill="#ffffff"/>
+        
+        <!-- Start/Select Buttons -->
+        <rect x="130" y="95" width="30" height="10" rx="5" fill="#ffffff"/>
+        <rect x="170" y="95" width="30" height="10" rx="5" fill="#ffffff"/>
+    </g>
+    
+    <!-- Shine Effect -->
+    <path d="M64 0H448C483.346 0 512 28.6538 512 64V96C512 60.6538 483.346 32 448 32H64C28.6538 32 0 60.6538 0 96V64C0 28.6538 28.6538 0 64 0Z" 
+          fill="white" fill-opacity="0.1"/>
+</svg>

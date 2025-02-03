@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Agent Dashboard">
+    <meta name="current-user" content="<%= agent.username %>">
+    <title><%= title %> - Agent Dashboard</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/themes.css">
+    <link rel="stylesheet" href="/css/notifications.css">
+</head>
+<body>
+    <header class="navbar navbar-dark bg-dark flex-md-nowrap p-2">
+        <a class="navbar-brand col-auto me-0 px-3" href="/agent/dashboard">
+            <i class="bi bi-grid-fill me-2"></i> Agent Dashboard
+        </a>
+        
+        <!-- Quick Navigation Links -->
+        <div class="navbar-nav flex-row me-auto">
+            <a class="nav-link px-3 text-white" href="/agent/dashboard">
+                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            </a>
+            <a class="nav-link px-3 text-white" href="/agent/players">
+                <i class="bi bi-people-fill me-1"></i>Players
+            </a>
+            <a class="nav-link px-3 text-white" href="/agent/transactions">
+                <i class="bi bi-cash-stack me-1"></i>Transactions
+            </a>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <!-- Balance Display -->
+            <div class="me-3 text-light">
+                <small class="d-block text-muted">Balance</small>
+                <strong>MMK <%= agent.balance.toLocaleString() %></strong>
+            </div>
+            
+            <!-- User Dropdown -->
+            <div class="dropdown text-end">
+                <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle fs-4"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end text-small shadow" aria-labelledby="dropdownUser1">
+                    <li><span class="dropdown-item-text"><strong><%= agent.username %></strong></span></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/agent/profile"><i class="bi bi-person me-2"></i>Profile</a></li>
+                    <li><a class="dropdown-item" href="/agent/settings"><i class="bi bi-gear me-2"></i>Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/agent/logout"><i class="bi bi-box-arrow-right me-2"></i>Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container-fluid py-4">
+        <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1500;"></div>
+        
+        <!-- Page Header -->
+        <div class="bg-white shadow-sm mb-4">
+            <div class="container-fluid py-4">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h1 class="h3 mb-1"><%= title %></h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="/agent/dashboard">Dashboard</a></li>
+                                <% if (breadcrumb && breadcrumb !== 'Dashboard') { %>
+                                <li class="breadcrumb-item active" aria-current="page"><%= breadcrumb %></li>
+                                <% } %>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-auto">
+                        <% if (subtitle) { %>
+                        <p class="text-muted mb-0"><%= subtitle %></p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Container for Notifications -->
+        <div class="toast-container position-fixed top-0 end-0 p-3"></div>

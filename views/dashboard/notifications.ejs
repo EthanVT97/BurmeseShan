@@ -1,0 +1,284 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<!-- Main Content -->
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <h1>Notifications</h1>
+            <div class="section-header-breadcrumb">
+                <div class="breadcrumb-item active"><a href="/dashboard">Dashboard</a></div>
+                <div class="breadcrumb-item">Notifications</div>
+            </div>
+        </div>
+
+        <div class="section-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>All Notifications</h4>
+                            <div class="card-header-action">
+                                <button class="btn btn-primary mark-all-read-btn">
+                                    <i class="fas fa-check-double"></i> Mark All as Read
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="notifications-list">
+                                <% if (notifications && notifications.length > 0) { %>
+                                    <% notifications.forEach(function(notification) { %>
+                                        <div class="notification-item <%= notification.read ? 'read' : 'unread' %>" data-id="<%= notification._id %>">
+                                            <div class="notification-icon bg-<%= notification.type %>">
+                                                <% if (notification.type === 'info') { %>
+                                                    <i class="fas fa-info"></i>
+                                                <% } else if (notification.type === 'success') { %>
+                                                    <i class="fas fa-check"></i>
+                                                <% } else if (notification.type === 'warning') { %>
+                                                    <i class="fas fa-exclamation"></i>
+                                                <% } else if (notification.type === 'error') { %>
+                                                    <i class="fas fa-times"></i>
+                                                <% } %>
+                                            </div>
+                                            <div class="notification-content">
+                                                <h6 class="notification-title"><%= notification.title %></h6>
+                                                <p class="notification-message"><%= notification.message %></p>
+                                                <small class="notification-time">
+                                                    <%= new Date(notification.createdAt).toLocaleString() %>
+                                                </small>
+                                            </div>
+                                            <div class="notification-actions">
+                                                <button class="btn btn-light mark-read-btn" <%= notification.read ? 'disabled' : '' %>>
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button class="btn btn-light delete-btn">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                <% } else { %>
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">
+                                            <i class="fas fa-bell"></i>
+                                        </div>
+                                        <h2>No Notifications</h2>
+                                        <p>You don't have any notifications yet.</p>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Notification styles -->
+<style>
+    .notifications-list {
+        max-height: 600px;
+        overflow-y: auto;
+    }
+
+    .notification-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 1rem;
+        border-bottom: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+    .notification-item:last-child {
+        border-bottom: none;
+    }
+
+    .notification-item.unread {
+        background-color: #f8f9fa;
+    }
+
+    .notification-item:hover {
+        background-color: #f1f3f4;
+    }
+
+    .notification-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        color: white;
+    }
+
+    .notification-icon i {
+        font-size: 1.2rem;
+    }
+
+    .bg-info { background-color: #3498db; }
+    .bg-success { background-color: #2ecc71; }
+    .bg-warning { background-color: #f1c40f; }
+    .bg-error { background-color: #e74c3c; }
+
+    .notification-content {
+        flex: 1;
+    }
+
+    .notification-title {
+        margin: 0;
+        font-weight: 600;
+        color: #2d3436;
+    }
+
+    .notification-message {
+        margin: 0.25rem 0;
+        color: #636e72;
+    }
+
+    .notification-time {
+        color: #b2bec3;
+        font-size: 0.8rem;
+    }
+
+    .notification-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .notification-actions .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #636e72;
+    }
+
+    .empty-state-icon {
+        font-size: 3rem;
+        color: #b2bec3;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: #2d3436;
+    }
+</style>
+
+<!-- Notification scripts -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mark single notification as read
+    document.querySelectorAll('.mark-read-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const notificationItem = this.closest('.notification-item');
+            const notificationId = notificationItem.dataset.id;
+            
+            try {
+                const response = await fetch(`/api/notifications/${notificationId}/read`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    notificationItem.classList.remove('unread');
+                    notificationItem.classList.add('read');
+                    this.disabled = true;
+                    updateUnreadCount();
+                }
+            } catch (error) {
+                console.error('Error marking notification as read:', error);
+                alert('Failed to mark notification as read');
+            }
+        });
+    });
+    
+    // Mark all notifications as read
+    document.querySelector('.mark-all-read-btn').addEventListener('click', async function() {
+        try {
+            const response = await fetch('/api/notifications/mark-all-read', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                document.querySelectorAll('.notification-item.unread').forEach(item => {
+                    item.classList.remove('unread');
+                    item.classList.add('read');
+                    item.querySelector('.mark-read-btn').disabled = true;
+                });
+                updateUnreadCount();
+            }
+        } catch (error) {
+            console.error('Error marking all notifications as read:', error);
+            alert('Failed to mark all notifications as read');
+        }
+    });
+    
+    // Delete notification
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            if (!confirm('Are you sure you want to delete this notification?')) return;
+            
+            const notificationItem = this.closest('.notification-item');
+            const notificationId = notificationItem.dataset.id;
+            
+            try {
+                const response = await fetch(`/api/notifications/${notificationId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    notificationItem.remove();
+                    updateUnreadCount();
+                    
+                    // Show empty state if no notifications left
+                    const remainingNotifications = document.querySelectorAll('.notification-item');
+                    if (remainingNotifications.length === 0) {
+                        const emptyState = document.createElement('div');
+                        emptyState.className = 'empty-state';
+                        emptyState.innerHTML = `
+                            <div class="empty-state-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h2>No Notifications</h2>
+                            <p>You don't have any notifications yet.</p>
+                        `;
+                        document.querySelector('.notifications-list').appendChild(emptyState);
+                    }
+                }
+            } catch (error) {
+                console.error('Error deleting notification:', error);
+                alert('Failed to delete notification');
+            }
+        });
+    });
+    
+    // Update unread count in sidebar
+    function updateUnreadCount() {
+        const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+        const sidebarBadge = document.querySelector('#notifications-count');
+        if (sidebarBadge) {
+            if (unreadCount > 0) {
+                sidebarBadge.textContent = unreadCount;
+                sidebarBadge.classList.remove('d-none');
+            } else {
+                sidebarBadge.classList.add('d-none');
+            }
+        }
+    }
+});
+</script>
+
+<%- include('../partials/footer') %>

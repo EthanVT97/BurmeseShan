@@ -1,0 +1,134 @@
+/* Light Theme */
+:root[data-theme="light"] {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+    --accent-color: #007bff;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+    --input-border: #ced4da;
+    --sidebar-bg: #343a40;
+    --sidebar-text: #ffffff;
+}
+
+/* Dark Theme */
+:root[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --border-color: #404040;
+    --accent-color: #0d6efd;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --card-bg: #2d2d2d;
+    --input-bg: #333333;
+    --input-border: #404040;
+    --sidebar-bg: #1a1a1a;
+    --sidebar-text: #ffffff;
+}
+
+/* Common Theme Styles */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+.card-header {
+    background-color: var(--bg-secondary);
+    border-bottom-color: var(--border-color);
+}
+
+.form-control {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--text-primary);
+}
+
+.form-control:focus {
+    background-color: var(--input-bg);
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+}
+
+.nav-tabs {
+    border-bottom-color: var(--border-color);
+}
+
+.nav-tabs .nav-link.active {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.nav-tabs .nav-link:not(.active) {
+    color: var(--text-secondary);
+}
+
+.table {
+    color: var(--text-primary);
+}
+
+.table thead th {
+    border-bottom-color: var(--border-color);
+}
+
+.table td, .table th {
+    border-top-color: var(--border-color);
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+.modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+.modal-footer {
+    border-top-color: var(--border-color);
+}
+
+/* Custom Switch Styles */
+.custom-switch .custom-control-label::before {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+}
+
+.custom-switch .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+}
+
+/* Font Sizes */
+html.font-small {
+    font-size: 14px;
+}
+
+html.font-medium {
+    font-size: 16px;
+}
+
+html.font-large {
+    font-size: 18px;
+}

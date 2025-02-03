@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Admin Dashboard">
+    <meta name="current-user" content="<%= user.username %>">
+    <title><%= title %> - Admin Dashboard</title>
+    
+    <!-- jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap CSS and JS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    
+    <!-- DataTables CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+    
+    <!-- Other CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/themes.css">
+    <link rel="stylesheet" href="/css/notifications.css">
+</head>
+<body>
+    <header class="navbar navbar-dark bg-dark flex-md-nowrap p-2">
+        <a class="navbar-brand col-auto me-0 px-3" href="/dashboard">
+            <i class="bi bi-grid-fill me-2"></i> Admin Dashboard
+        </a>
+        
+        <!-- Quick Navigation Links -->
+        <div class="navbar-nav flex-row me-auto">
+            <a class="nav-link px-3 text-white" href="/dashboard">
+                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            </a>
+            <a class="nav-link px-3 text-white" href="/players">
+                <i class="bi bi-people-fill me-1"></i>Players
+            </a>
+            <a class="nav-link px-3 text-white" href="/transactions">
+                <i class="bi bi-cash-stack me-1"></i>Transactions
+            </a>
+            <a class="nav-link px-3 text-white" href="/agents">
+                <i class="bi bi-person-badge-fill me-1"></i>Agents
+            </a>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <%- include('./notifications') %>
+            <div class="dropdown text-end">
+                <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="<%= user.profileImage || '/images/avatar-default.png' %>" class="profile-image rounded-circle" width="32" height="32">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" href="/profile"><i class="bi bi-person me-2"></i>Profile</a></li>
+                    <li><a class="dropdown-item" href="/settings"><i class="bi bi-gear me-2"></i>Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid py-4">
+        <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1500;"></div>
+        <!-- Page Header -->
+        <div class="bg-white shadow-sm">
+            <div class="container-fluid py-4">

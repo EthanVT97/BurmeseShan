@@ -1,0 +1,224 @@
+<%- include('../partials/header') %>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Settings Navigation -->
+        <div class="col-12 col-lg-3 mb-4">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                        <button class="nav-link active text-start" data-bs-toggle="pill" data-bs-target="#notifications" type="button">
+                            <i class="bi bi-bell me-2"></i> Notifications
+                        </button>
+                        <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#appearance" type="button">
+                            <i class="bi bi-palette me-2"></i> Appearance
+                        </button>
+                        <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#localization" type="button">
+                            <i class="bi bi-globe me-2"></i> Localization
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Content -->
+        <div class="col-12 col-lg-9">
+            <div class="tab-content">
+                <!-- Notification Settings -->
+                <div class="tab-pane fade show active" id="notifications">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Notification Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="notificationForm">
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="emailNotifications" 
+                                            <%= settings.emailNotifications ? 'checked' : '' %>>
+                                        <label class="form-check-label" for="emailNotifications">Email Notifications</label>
+                                    </div>
+                                    <small class="text-muted">Receive notifications via email</small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="pushNotifications"
+                                            <%= settings.pushNotifications ? 'checked' : '' %>>
+                                        <label class="form-check-label" for="pushNotifications">Push Notifications</label>
+                                    </div>
+                                    <small class="text-muted">Receive browser push notifications</small>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appearance Settings -->
+                <div class="tab-pane fade" id="appearance">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Appearance Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="appearanceForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Theme</label>
+                                    <div class="d-flex gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="theme" id="lightTheme" 
+                                                value="light" <%= settings.theme === 'light' ? 'checked' : '' %>>
+                                            <label class="form-check-label" for="lightTheme">
+                                                Light
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="theme" id="darkTheme" 
+                                                value="dark" <%= settings.theme === 'dark' ? 'checked' : '' %>>
+                                            <label class="form-check-label" for="darkTheme">
+                                                Dark
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="theme" id="systemTheme" 
+                                                value="system" <%= settings.theme === 'system' ? 'checked' : '' %>>
+                                            <label class="form-check-label" for="systemTheme">
+                                                System
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Localization Settings -->
+                <div class="tab-pane fade" id="localization">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Localization Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="localizationForm">
+                                <div class="mb-3">
+                                    <label for="language" class="form-label">Language</label>
+                                    <select class="form-select" id="language">
+                                        <option value="en" <%= settings.language === 'en' ? 'selected' : '' %>>English</option>
+                                        <option value="es" <%= settings.language === 'es' ? 'selected' : '' %>>Spanish</option>
+                                        <option value="fr" <%= settings.language === 'fr' ? 'selected' : '' %>>French</option>
+                                        <option value="de" <%= settings.language === 'de' ? 'selected' : '' %>>German</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="timezone" class="form-label">Timezone</label>
+                                    <select class="form-select" id="timezone">
+                                        <option value="UTC" <%= settings.timezone === 'UTC' ? 'selected' : '' %>>UTC</option>
+                                        <option value="America/New_York" <%= settings.timezone === 'America/New_York' ? 'selected' : '' %>>Eastern Time</option>
+                                        <option value="America/Chicago" <%= settings.timezone === 'America/Chicago' ? 'selected' : '' %>>Central Time</option>
+                                        <option value="America/Denver" <%= settings.timezone === 'America/Denver' ? 'selected' : '' %>>Mountain Time</option>
+                                        <option value="America/Los_Angeles" <%= settings.timezone === 'America/Los_Angeles' ? 'selected' : '' %>>Pacific Time</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to show toast notification
+    function showToast(message, type = 'success') {
+        const toastContainer = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-white bg-${type} border-0`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+        
+        toastContainer.appendChild(toast);
+        const bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+        
+        toast.addEventListener('hidden.bs.toast', () => {
+            toast.remove();
+        });
+    }
+
+    // Function to save settings
+    async function saveSettings(settings) {
+        try {
+            const response = await fetch('/admin/settings/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(settings)
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showToast(data.message);
+            } else {
+                showToast(data.message, 'danger');
+            }
+        } catch (error) {
+            console.error('Error saving settings:', error);
+            showToast('Failed to save settings', 'danger');
+        }
+    }
+
+    // Event listeners for settings changes
+    const settingsElements = [
+        'emailNotifications',
+        'pushNotifications',
+        'language',
+        'timezone'
+    ];
+
+    settingsElements.forEach(elementId => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.addEventListener('change', () => {
+                const settings = {
+                    emailNotifications: document.getElementById('emailNotifications').checked,
+                    pushNotifications: document.getElementById('pushNotifications').checked,
+                    theme: document.querySelector('input[name="theme"]:checked').value,
+                    language: document.getElementById('language').value,
+                    timezone: document.getElementById('timezone').value
+                };
+                saveSettings(settings);
+            });
+        }
+    });
+
+    // Event listener for theme changes
+    document.querySelectorAll('input[name="theme"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            const settings = {
+                emailNotifications: document.getElementById('emailNotifications').checked,
+                pushNotifications: document.getElementById('pushNotifications').checked,
+                theme: document.querySelector('input[name="theme"]:checked').value,
+                language: document.getElementById('language').value,
+                timezone: document.getElementById('timezone').value
+            };
+            saveSettings(settings);
+        });
+    });
+});
+</script>

@@ -1,0 +1,102 @@
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="<%= user.role === 'admin' ? '/dashboard/admin' : '/dashboard/agent' %>">
+                    <i class="bi bi-house-door"></i>
+                    Dashboard
+                </a>
+            </li>
+            
+            <% if (user.role === 'admin') { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/games">
+                        <i class="bi bi-controller"></i>
+                        Games Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/players">
+                        <i class="bi bi-people"></i>
+                        Players
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/agents">
+                        <i class="bi bi-person-badge"></i>
+                        Agents
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/transactions">
+                        <i class="bi bi-cash"></i>
+                        Transactions
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/reports">
+                        <i class="bi bi-file-earmark-text"></i>
+                        Reports
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/settings">
+                        <i class="bi bi-gear"></i>
+                        Settings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard/notifications">
+                        <i class="bi bi-bell"></i>
+                        Notifications
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard/chat">
+                        <i class="bi bi-chat-dots"></i>
+                        Live Chat Support
+                    </a>
+                </li>
+            <% } else { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/agent/players">
+                        <i class="bi bi-people"></i>
+                        My Players
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/agent/transactions">
+                        <i class="bi bi-cash"></i>
+                        Transactions
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/agent/commission">
+                        <i class="bi bi-currency-dollar"></i>
+                        Commission
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/agent/profile">
+                        <i class="bi bi-person"></i>
+                        Profile
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+
+        <% if (user.role === 'admin') { %>
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <span>Admin Tools</span>
+            </h6>
+            <ul class="nav flex-column mb-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/maintenance">
+                        <i class="bi bi-tools"></i>
+                        Maintenance
+                    </a>
+                </li>
+            </ul>
+        <% } %>
+    </div>
+</nav>

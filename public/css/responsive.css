@@ -1,0 +1,343 @@
+/* Responsive Styles */
+
+/* Base styles for mobile first approach */
+html {
+    font-size: 14px;
+}
+
+body {
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Main content responsive padding */
+.main-content {
+    padding: clamp(0.875rem, 2vw, 1.5rem);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100vh;
+}
+
+/* Info boxes responsive styles */
+.info-box {
+    padding: clamp(1rem, 2vw, 1.5rem);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    min-height: auto;
+    transition: transform 0.2s ease;
+}
+
+.info-box:hover {
+    transform: translateY(-2px);
+}
+
+.info-box-icon {
+    width: clamp(45px, 8vw, 60px);
+    height: clamp(45px, 8vw, 60px);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    transition: all 0.3s ease;
+}
+
+.info-box-number {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    word-break: break-word;
+}
+
+/* Card responsive styles */
+.card {
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* Table responsive styles */
+.table-card {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.table-card::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-card::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.table-card::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.table {
+    min-width: 600px;
+    font-size: 0.875rem;
+}
+
+/* Form controls responsive */
+.form-control, .form-select {
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+    padding: clamp(0.5rem, 1vw, 0.75rem);
+    transition: border-color 0.2s ease;
+}
+
+/* Button responsive */
+.btn {
+    padding: clamp(0.5rem, 1vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+    transition: all 0.2s ease;
+}
+
+/* Navigation responsive */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+
+    .navbar-nav {
+        margin-top: 1rem;
+    }
+
+    .nav-link {
+        padding: 0.5rem 0;
+    }
+
+    .dropdown-menu {
+        position: static !important;
+        float: none;
+        width: 100%;
+        margin-top: 0;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+    }
+}
+
+/* Sidebar responsive */
+@media (max-width: 992px) {
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 0;
+        bottom: 0;
+        z-index: 1030;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.show {
+        left: 0;
+    }
+
+    .sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1020;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-backdrop.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+    }
+}
+
+/* Grid system responsive adjustments */
+@media (max-width: 576px) {
+    .col-sm-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .info-box {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Typography responsive */
+@media (max-width: 768px) {
+    h1, .h1 { font-size: calc(1.375rem + 1.5vw); }
+    h2, .h2 { font-size: calc(1.325rem + 0.9vw); }
+    h3, .h3 { font-size: calc(1.3rem + 0.6vw); }
+    h4, .h4 { font-size: calc(1.275rem + 0.3vw); }
+}
+
+/* Modal responsive */
+@media (max-width: 576px) {
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+
+    .modal-content {
+        border-radius: 0.5rem;
+    }
+
+    .modal-header {
+        padding: 1rem;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .modal-footer {
+        padding: 1rem;
+    }
+}
+
+/* Utility classes for responsive design */
+.d-sm-none { display: none !important; }
+@media (min-width: 576px) { .d-sm-block { display: block !important; } }
+@media (min-width: 768px) { .d-md-block { display: block !important; } }
+@media (min-width: 992px) { .d-lg-block { display: block !important; } }
+@media (min-width: 1200px) { .d-xl-block { display: block !important; } }
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+    html {
+        font-size: 15px;
+    }
+
+    .main-content {
+        padding: clamp(1.25rem, 2vw, 1.75rem);
+    }
+
+    .info-box {
+        padding: clamp(1.25rem, 2vw, 1.75rem);
+    }
+
+    .info-box-icon {
+        width: clamp(55px, 8vw, 65px);
+        height: clamp(55px, 8vw, 65px);
+        font-size: clamp(1.5rem, 2vw, 1.75rem);
+    }
+
+    .table {
+        font-size: 0.9375rem;
+    }
+    
+    #toastContainer {
+        max-width: 320px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+
+    .main-content {
+        padding: clamp(1.5rem, 2vw, 2rem);
+    }
+
+    .info-box {
+        padding: clamp(1.5rem, 2vw, 2rem);
+        margin-bottom: clamp(1.5rem, 2vw, 2rem);
+    }
+
+    .info-box-icon {
+        width: clamp(60px, 8vw, 70px);
+        height: clamp(60px, 8vw, 70px);
+        font-size: clamp(1.75rem, 2vw, 2rem);
+    }
+
+    .card {
+        margin-bottom: clamp(1.5rem, 2vw, 2rem);
+    }
+
+    .form-control, .form-select, .btn {
+        font-size: clamp(0.9375rem, 1.5vw, 1rem);
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    #nav-bar {
+        transform: translateX(0);
+        box-shadow: 1px 0 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .main-content {
+        margin-left: 250px;
+        padding: clamp(1.75rem, 2vw, 2.25rem);
+    }
+
+    .table-responsive {
+        overflow-x: visible;
+    }
+
+    .info-box-icon {
+        width: clamp(65px, 8vw, 75px);
+        height: clamp(65px, 8vw, 75px);
+        font-size: clamp(1.875rem, 2vw, 2.25rem);
+    }
+    
+    .card-body {
+        padding: clamp(1.5rem, 2vw, 2rem);
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .main-content {
+        padding: clamp(2rem, 2vw, 2.5rem);
+    }
+
+    .container-fluid {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+    
+    .info-box-icon {
+        width: clamp(70px, 8vw, 80px);
+        height: clamp(70px, 8vw, 80px);
+        font-size: clamp(2rem, 2vw, 2.5rem);
+    }
+}
+
+/* XXL devices (1400px and up) */
+@media (min-width: 1400px) {
+    .container-fluid {
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    #nav-bar {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 0;
+    }
+
+    .no-print {
+        display: none;
+    }
+    
+    .card {
+        break-inside: avoid;
+    }
+}

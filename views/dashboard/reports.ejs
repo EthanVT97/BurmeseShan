@@ -1,0 +1,273 @@
+<%- include('../partials/header', { title: 'Reports', subtitle: 'Analytics & Reports', breadcrumb: 'Reports' }) %>
+
+<!-- Main Content -->
+<div class="container-fluid py-3">
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">Analytics & Reports</h1>
+            <p class="mb-0 text-muted">View and export system analytics</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-primary btn-sm btn-lg-normal" id="refreshStats">
+                <i class="bi bi-arrow-clockwise me-1"></i> 
+                <span class="d-none d-sm-inline">Refresh Stats</span>
+            </button>
+            <button type="button" class="btn btn-success btn-sm btn-lg-normal" id="exportReport">
+                <i class="bi bi-file-earmark-excel me-1"></i>
+                <span class="d-none d-sm-inline">Export Report</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-3 mb-4">
+        <!-- Total Players -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 stats-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="stats-icon bg-primary">
+                                <i class="bi bi-people"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-subtitle mb-1 text-muted">Total Players</h6>
+                            <h3 class="card-title h4 mb-0" id="totalPlayers">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Agents -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 stats-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="stats-icon bg-success">
+                                <i class="bi bi-person-badge"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-subtitle mb-1 text-muted">Total Agents</h6>
+                            <h3 class="card-title h4 mb-0" id="totalAgents">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Games -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 stats-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="stats-icon bg-info">
+                                <i class="bi bi-controller"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-subtitle mb-1 text-muted">Total Games</h6>
+                            <h3 class="card-title h4 mb-0" id="totalGames">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Transactions -->
+        <div class="col-6 col-md-3">
+            <div class="card h-100 stats-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="stats-icon bg-warning">
+                                <i class="bi bi-currency-exchange"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="card-subtitle mb-1 text-muted">Total Transactions</h6>
+                            <h3 class="card-title h4 mb-0" id="totalTransactions">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-3 mb-4">
+        <!-- Daily Players Chart -->
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
+                        <h5 class="card-title mb-0">Daily Players</h5>
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-outline-secondary active" data-range="7">7 Days</button>
+                            <button type="button" class="btn btn-outline-secondary" data-range="30">30 Days</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="dailyPlayersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction Volume Chart -->
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
+                        <h5 class="card-title mb-0">Transaction Volume</h5>
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-outline-secondary active" data-range="7">7 Days</button>
+                            <button type="button" class="btn btn-outline-secondary" data-range="30">30 Days</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="transactionVolumeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Recent Activity</h5>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="refreshActivity">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="activityTable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>User</th>
+                            <th>Details</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be loaded via AJAX -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container for Notifications -->
+<div id="toastContainer" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050"></div>
+
+<%- include('../partials/footer') %>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Page specific script -->
+<script src="/js/reports.js"></script>
+
+<!-- Custom CSS -->
+<style>
+/* Stats Cards */
+.stats-card {
+    transition: transform 0.2s;
+}
+
+.stats-card:hover {
+    transform: translateY(-3px);
+}
+
+.stats-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+@media (min-width: 768px) {
+    .stats-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+    }
+}
+
+.stats-icon i {
+    font-size: 20px;
+    color: white;
+}
+
+@media (min-width: 768px) {
+    .stats-icon i {
+        font-size: 24px;
+    }
+}
+
+/* Chart Container */
+.chart-container {
+    min-height: 300px;
+    width: 100%;
+}
+
+/* Responsive Table */
+.table-responsive {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+/* Button Sizes */
+.btn-lg-normal {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+    .btn-lg-normal {
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+    }
+}
+
+/* Colors */
+.bg-primary { background-color: var(--bs-primary) !important; }
+.bg-success { background-color: var(--bs-success) !important; }
+.bg-info { background-color: var(--bs-info) !important; }
+.bg-warning { background-color: var(--bs-warning) !important; }
+
+/* DataTable Responsive Styles */
+@media (max-width: 767px) {
+    #activityTable_wrapper .row:first-child {
+        margin-bottom: 1rem;
+    }
+    
+    #activityTable_wrapper .dataTables_filter {
+        text-align: left;
+    }
+    
+    #activityTable_wrapper .dataTables_paginate {
+        text-align: left;
+        margin-top: 1rem;
+    }
+}
+</style>

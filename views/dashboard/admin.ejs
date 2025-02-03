@@ -1,0 +1,354 @@
+<%- include('../partials/header', { title: 'Admin Dashboard', subtitle: 'Overview', breadcrumb: 'Dashboard' }) %>
+
+<div class="container-fluid">
+    <div class="row">
+        <main class="col-12 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Admin Dashboard</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="exportReport()">
+                            <i class="bi bi-download me-1"></i>Export Report
+                        </button>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="timeRangeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-calendar3 me-1"></i>This Week
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="timeRangeDropdown">
+                            <li><a class="dropdown-item" href="#">Today</a></li>
+                            <li><a class="dropdown-item" href="#">This Week</a></li>
+                            <li><a class="dropdown-item" href="#">This Month</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Custom Range</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title mb-0">Total Players</h6>
+                                    <h2 class="mt-2 mb-0"><%= stats.totalPlayers %></h2>
+                                    <small>Active: <%= stats.activePlayers %></small>
+                                </div>
+                                <i class="bi bi-people fs-1 opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title mb-0">Total Games</h6>
+                                    <h2 class="mt-2 mb-0"><%= stats.totalGames %></h2>
+                                    <small>Active: <%= stats.activeGames %></small>
+                                </div>
+                                <i class="bi bi-controller fs-1 opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title mb-0">Total Agents</h6>
+                                    <h2 class="mt-2 mb-0"><%= stats.totalAgents %></h2>
+                                    <small>Active: <%= stats.activeAgents %></small>
+                                </div>
+                                <i class="bi bi-person-badge fs-1 opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white h-100">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h6 class="text-muted">Total Revenue</h6>
+                                    <h2 class="mt-2 mb-0">MMK <%= stats.totalRevenue || 0 %></h2>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-currency-exchange fs-1 opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Transactions</h5>
+                    <a href="/transactions" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Player</th>
+                                <th>Type</th>
+                                <th>Amount (MMK)</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% recentTransactions.forEach(function(transaction) { %>
+                                <tr>
+                                    <td><%= transaction._id %></td>
+                                    <td><%= transaction.player ? transaction.player.username : 'Unknown' %></td>
+                                    <td>
+                                        <span class="badge bg-<%= transaction.type === 'deposit' ? 'success' : 'danger' %>">
+                                            <%= transaction.type %>
+                                        </span>
+                                    </td>
+                                    <td>MMK <%= transaction.amount %></td>
+                                    <td>
+                                        <span class="badge bg-<%= transaction.status === 'completed' ? 'success' : transaction.status === 'pending' ? 'warning' : 'danger' %>">
+                                            <%= transaction.status %>
+                                        </span>
+                                    </td>
+                                    <td><%= new Date(transaction.createdAt).toLocaleDateString() %></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewTransaction('<%= transaction._id %>')">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <% if (transaction.status === 'pending') { %>
+                                            <button class="btn btn-sm btn-outline-success" onclick="approveTransaction('<%= transaction._id %>')">
+                                                <i class="bi bi-check-lg"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger" onclick="rejectTransaction('<%= transaction._id %>')">
+                                                <i class="bi bi-x-lg"></i>
+                                            </button>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Games Management -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Games Management</h5>
+                    <button class="btn btn-sm btn-primary" onclick="addNewGame()">
+                        <i class="bi bi-plus-lg me-1"></i>Add New Game
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Game</th>
+                                <th>Status</th>
+                                <th>Players</th>
+                                <th>Revenue</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% games.forEach(function(game) { %>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="game-image-container me-2">
+                                                <img src="<%= game.imageUrl %>" 
+                                                     alt="<%= game.name %>" 
+                                                     class="game-thumbnail"
+                                                     onerror="this.onerror=null; this.src='/images/games/default-game.svg';">
+                                            </div>
+                                            <span class="game-name"><%= game.name %></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" 
+                                                id="gameStatus_<%= game._id %>" 
+                                                <%= game.active ? 'checked' : '' %>
+                                                onchange="toggleGameStatus('<%= game._id %>', this.checked)">
+                                        </div>
+                                    </td>
+                                    <td><%= game.playerCount || 0 %></td>
+                                    <td>MMK <%= game.revenue || 0 %></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="editGame('<%= game._id %>')">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteGame('<%= game._id %>')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Add Game Modal -->
+<div class="modal fade" id="addGameModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Game</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addGameForm">
+                    <div class="mb-3">
+                        <label class="form-label">Game Name</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Game Image</label>
+                        <input type="file" class="form-control" name="image" accept="image/*" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="description" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitAddGame()">Add Game</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard Scripts -->
+<script>
+function exportReport() {
+    // Implement export functionality
+    alert('Export functionality will be implemented');
+}
+
+function viewTransaction(id) {
+    // Implement view transaction details
+    window.location.href = `/transactions/${id}`;
+}
+
+function approveTransaction(id) {
+    if (confirm('Are you sure you want to approve this transaction?')) {
+        fetch(`/api/transactions/${id}/approve`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error approving transaction');
+            }
+        });
+    }
+}
+
+function rejectTransaction(id) {
+    if (confirm('Are you sure you want to reject this transaction?')) {
+        fetch(`/api/transactions/${id}/reject`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error rejecting transaction');
+            }
+        });
+    }
+}
+
+function addNewGame() {
+    const modal = new bootstrap.Modal(document.getElementById('addGameModal'));
+    modal.show();
+}
+
+function submitAddGame() {
+    const form = document.getElementById('addGameForm');
+    const formData = new FormData(form);
+    
+    fetch('/api/games', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error adding game');
+        }
+    });
+}
+
+function toggleGameStatus(id, status) {
+    fetch(`/api/games/${id}/toggle`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ active: status })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            alert('Error updating game status');
+            // Revert the toggle if failed
+            document.getElementById(`gameStatus_${id}`).checked = !status;
+        }
+    });
+}
+
+function editGame(id) {
+    window.location.href = `/games/${id}/edit`;
+}
+
+function deleteGame(id) {
+    if (confirm('Are you sure you want to delete this game? This action cannot be undone.')) {
+        fetch(`/api/games/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error deleting game');
+            }
+        });
+    }
+}
+</script>
+
+<%- include('../partials/footer') %>
