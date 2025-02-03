@@ -29,6 +29,7 @@ connectDB().catch(err => {
 });
 
 const app = express();
+app.set('trust proxy', 1); // trust first proxy
 const server = http.createServer(app);
 const io = socketIO(server, {
     cors: {

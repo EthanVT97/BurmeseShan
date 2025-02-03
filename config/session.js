@@ -20,7 +20,9 @@ const sessionConfig = {
 
 // If in production, set additional security options
 if (process.env.NODE_ENV === 'production') {
-    sessionConfig.cookie.sameSite = 'strict';
+    sessionConfig.cookie.sameSite = 'lax';
+    sessionConfig.cookie.secure = true;
+    sessionConfig.proxy = true; // Trust the reverse proxy
 }
 
 module.exports = sessionConfig;
